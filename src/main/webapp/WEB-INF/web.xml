@@ -3,18 +3,34 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee https://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 
-	<!-- The definition of the Root Spring Container shared by all Servlets and Filters -->
+	<!-- 2번 The definition of the Root Spring Container shared by all Servlets and Filters 
+	루트 스프링 컨테이너 의 definition은 공유되어있습니다. 모든 서블릿, 필터 
+	-->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>/WEB-INF/spring/root-context.xml</param-value>
+		<!--
+		<param-value>
+					/WEB-INF/spring/daoContext.xml
+					/WEB-INF/spring/applicationContext.xml
+		</param-value>
+		 -->
+		 <!-- 하나 이상의 xml 설정 파일을 사용할 경우 여러 줄에 걸쳐 넣어주거 공백으로 분리하면 된다. -->
+	</context-param>
+	<!-- 3번  -->
+	<context-param>
+		<param-name>contextClass</param-name>
+		<param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext</param-value>
 	</context-param>
 	
-	<!-- Creates the Spring Container shared by all Servlets and Filters -->
+	<!-- 1번 Creates the Spring Container shared by all Servlets and Filters 
+	만듭니다. 서블릿, 필터들은 스프링 컨테이너를 공유하게 만들어줍니다. 
+	-->
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 
-	<!-- Processes application requests -->
+	<!-- Processes application requests 
 	<servlet>
 		<servlet-name>appServlet</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -22,6 +38,36 @@
 			<param-name>contextConfigLocation</param-name>
 			<param-value>/WEB-INF/spring/appServlet/servlet-context.xml</param-value>
 		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	-->
+	<!-- 4번 -->
+	<servlet>
+		<servlet-name>appServlet
+		<!-- spring-servlet.xml 이생기면 spring으로 바꿀 것 -->
+		</servlet-name>
+		<!-- DispatcherServlet에 의해 만들어지는 애플리케이 컨텍스트는 모두 독립적인 네임스페이스를 갖는다.
+			 이 네임스페이스 서블릿 단위로 만들어지는 컨텍스트 구분하는 키가 된다. 네임스페이스는 servlet-name
+			 으로 지정한 서블릿 이름에 -servlet을 붙여서 만든다. 서블릿 이름이 spring이라면 네임 스페이스는 spring-servlet을
+			 붙여서 만든다 -->
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		
+		<!-- load-on-startup은 서블릿 컨테이너 등록된 서블릿은 언제 만들고 초기화할지, 또 그 순서는 어떻게 되는지를 지정하는 정수 값이다
+			 이 항목을 비우거나 음의 정수로 넣으면 해당 서블은 서블릿 컨테이너가 임의로 정한 시점에서 만들어지고 초기화 된다.
+			 반대로 0이상의 값을 넣으 웹 애플리케이이 시작되는 시점에서 서블릿을 로딩하고 초기화한다.-->
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>
+						/WEB-INF/spring/appServlet/servlet-context.xml
+						<!-- 
+						 
+						/WEB-INF/spring-servlet.xml
+						-->
+			</param-value>
+		</init-param>
+		<!-- 서블릿 컨텍스트의 파라미터 선언 방법은 루 컨텍스트와 거의 비슷하다. 
+		     파라미터의 선언에 context-param 대신에 servlet init-param을 이용한다는 점만 다르다.  
+			 -->
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 		
